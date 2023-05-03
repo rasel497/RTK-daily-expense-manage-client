@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from '../component/Shared/Navbar/Navbar';
 import AddView from '../component/Home/AddView';
+import ListView from '../component/Home/ListView';
 
 const Main = () => {
     return (
@@ -8,6 +9,7 @@ const Main = () => {
             <Navbar />
             <div className='flex justify-around'>
                 <AddView />
+                <ListView />
             </div>
         </div>
     );
