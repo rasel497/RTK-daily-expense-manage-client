@@ -15,12 +15,12 @@ const Navbar = () => {
                     </ul>
                 </div>
             </div>
-            <div className="navbar-center">
+            <div className="navbar-center text-white">
                 <a className="btn btn-ghost normal-case text-xl">Daily Expense</a>
             </div>
 
             <div className="navbar-end">
-                <div className="form-control">
+                <div className="form-control text-black">
                     <input type="text" placeholder="Search" className="input input-bordered" />
                 </div>
                 <button className="btn btn-ghost btn-circle">

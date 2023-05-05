@@ -1,10 +1,44 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addList, deleteList, setLists } from '../State/UseReducer';
+import { Link } from 'react-router-dom';
+
 
 const ListView = () => {
+    const { lists, loadList } = useSelector((state) => state.lists)
+    console.log(lists);
+    const dispatch = useDispatch()
+
+    // daypicker dd-mm-yy
+    const date = new Date()
+    const currentDate = date.getDay() + '/' + parseInt(date.getMonth() + 1) + "/" + date.getFullYear();
+
+    // set all users in table
+    useEffect(() => {
+        if (loadList) {
+            axios.get('http://localhost:5000/exphistory/')
+                .then(res => {
+                    console.log(res.data)
+                    dispatch(setLists(res.data))
+                })
+                .catch(err => console.log(err))
+        }
+    }, [loadList]);
+
+    // delete list of history
+    const handleDelete = (id) => {
+        axios.delete('http://localhost:5000/deleteone/' + id)
+            .then(res => {
+                console.log(res);
+                dispatch(deleteList({ id: id }))
+            })
+            .catch(err => console.log(err));
+    }
     return (
         <div className="overflow-x-auto my-10">
+            <h2 className='text-xl font-bold text-black my-1'>Expense History</h2>
             <table className="table w-full">
-                {/* head*/}
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -16,45 +50,24 @@ const ListView = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {/* row 1 */}
-                    <tr>
-                        <th>1</th>
-                        <td>05/03/2023</td>
-                        <td>Cy Ganderton</td>
-                        <td>500</td>
-                        <td>0</td>
-                        <td>
-                            <button className="btn btn-sm bg-blue-500 mx-2">Edit</button>
-                            <button className="btn btn-sm bg-red-600">Delete</button>
-                        </td>
-                    </tr>
-                    {/* row 2 */}
-                    <tr className="active">
-                        <th>2</th>
-                        <td>05/03/2023</td>
-                        <td>Support Technician</td>
-                        <td>500</td>
-                        <td>0</td>
-                        <td>
-                            <button className="btn btn-sm bg-blue-500 mx-2">Edit</button>
-                            <button className="btn btn-sm bg-red-600">Delete</button>
-                        </td>
-                    </tr>
-                    {/* row 3 */}
-                    <tr>
-                        <th>3</th>
-                        <td>05/03/2023</td>
-                        <td>Tax Accountant</td>
-                        <td>0</td>
-                        <td>750</td>
-                        <td>
-                            <button className="btn btn-sm bg-blue-500 mx-2">Edit</button>
-                            <button className="btn btn-sm bg-red-600">Delete</button>
-                        </td>
-                    </tr>
+                    {
+                        Array.from(lists).map((list, index) => {
+                            return <tr key={index.id}>
+                                <td>{list.id}</td>
+                                <td>{currentDate}</td>
+                                <td>{list.purpose_title}</td>
+                                <td>{list.deposit}</td>
+                                <td>{list.expense}</td>
+                                <td>
+                                    <Link to={`/edit/${list.id}`} className='btn btn-sm btn-primary mx-2'>Edit</Link>
+                                    <Link onClick={() => handleDelete(list.id)} className='btn btn-sm bg-red-600 mx-2'>Delete</Link>
+                                </td>
+                            </tr>
+                        })
+                    }
                 </tbody>
             </table>
-        </div>
+        </div >
     );
 };
 
