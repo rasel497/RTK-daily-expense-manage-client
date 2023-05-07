@@ -1,16 +1,19 @@
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteList, setLists } from '../State/UseReducer';
 import { Link } from 'react-router-dom';
-
+import { useForm } from 'react-hook-form';
 
 const ListView = () => {
-    const { lists, loadList } = useSelector((state) => state.lists)
-    const dispatch = useDispatch()
+    const { lists, loadList, setUpdate } = useSelector((state) => state.lists);
+    const { reset } = useForm();
+    const dispatch = useDispatch();
 
-    // daypicker dd-mm-yy
-    const date = new Date()
+    const [selectedList, setSelectedList] = useState(null);
+
+    // raect daypicker dd-mm-yy
+    const date = new Date();
     const currentDate = date.getDay() + '/' + parseInt(date.getMonth() + 1) + "/" + date.getFullYear();
 
     // set all users in table
@@ -24,6 +27,16 @@ const ListView = () => {
                 .catch(err => console.log(err))
         }
     }, [loadList]);
+
+
+    // handleUpdate
+    const handleEdit = (id) => {
+        const selected = lists.find((list) => list.id === id);
+        console.log('selected', selected);
+        setSelectedList(selected);
+        // dispatch(setUpdate(selected))
+    }
+
 
     // delete list of history
     const handleDelete = (id) => {
@@ -58,7 +71,7 @@ const ListView = () => {
                                 <td>{list.deposit}</td>
                                 <td>{list.expense}</td>
                                 <td>
-                                    <Link to={`/edit/${list.id}`} className='btn btn-sm btn-primary mx-2'>Edit</Link>
+                                    <Link onClick={() => handleEdit(list.id)} className='btn btn-sm btn-primary mx-2'>Edit</Link>
                                     <Link onClick={() => handleDelete(list.id)} className='btn btn-sm bg-red-600 mx-2'>Delete</Link>
                                 </td>
                             </tr>

@@ -5,7 +5,7 @@ const listSlice = createSlice({
     initialState: {
         lists: [],
         loadList: true,
-        totalAmount: [0]
+        setUpdate: false,
     },
     reducers: {
         setLists: (state, action) => {
@@ -22,9 +22,10 @@ const listSlice = createSlice({
         loadList: (state, action) => {
             state.loadList = action.payload;
         },
-        updateClear: (state, action) => {
-            // logic null/reset
+        setUpdate: (state, action) => {
+            state.setUpdate = action.payload;
         },
+
         updateList: (state, action) => {
             const { id, purpose_title, deposit, expense } = action.payload;
             const ul = state.users.find(user => user.id == id);
@@ -34,6 +35,11 @@ const listSlice = createSlice({
                 ul.amount = expense;
             }
         },
+
+        updateClear: (state, action) => {
+            // logic null/reset
+        },
+
         deleteList: (state, action) => {
             const { id } = action.payload;
             state.lists = state.lists.filter(f => f.id !== id);
@@ -41,5 +47,5 @@ const listSlice = createSlice({
     }
 });
 
-export const { setLists, loadList, totalAmount, updateList, deleteList } = listSlice.actions;
+export const { setLists, loadList, totalAmount, setUpdate, updateList, deleteList } = listSlice.actions;
 export default listSlice.reducer;

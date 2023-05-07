@@ -6,13 +6,13 @@ import { totalAmount } from '../State/UseReducer';
 const DepositExpenseTotal = () => {
     const lists = useSelector(state => state.lists)
     const dispatch = useDispatch();
-    console.log('Nexwwww', lists)
+    // console.log('Nexwwww', lists)
     const [count, setCount] = useState(0);
 
     useEffect((data) => {
         axios.get('http://localhost:5000/totalBalance/', data)
             .then(res => {
-                console.log('upppp', res);
+                // console.log('upppp', res);
                 dispatch(totalAmount({ deposit: res.data[0].amount, expense: res.data[0].amount }))
             })
             .catch(err => console.log(err))
