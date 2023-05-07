@@ -1,16 +1,12 @@
 import axios from 'axios';
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loadList } from '../State/UseReducer';
 
-
 const AddView = () => {
-    const lists = useSelector(state => state.lists)
-    const { register, formState: { errors }, handleSubmit } = useForm();
+    const { register, formState: { errors }, handleSubmit, reset } = useForm();
     const dispatch = useDispatch();
 
-
-    console.log('lists...', lists)
     const handlePost = (data) => {
         console.log('Reeee', data);
         axios.post('http://localhost:5000/exphistorypost/', data)
@@ -20,6 +16,9 @@ const AddView = () => {
             })
             .catch(err => console.log(err))
     }
+
+    // reset()
+
     return (
         <div className='flex justify-center items-center rounded-md bg-cyan-600 my-10'>
             <div className='w-96 p-7'>

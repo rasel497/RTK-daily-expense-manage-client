@@ -1,13 +1,12 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addList, deleteList, setLists } from '../State/UseReducer';
+import { deleteList, setLists } from '../State/UseReducer';
 import { Link } from 'react-router-dom';
 
 
 const ListView = () => {
     const { lists, loadList } = useSelector((state) => state.lists)
-    console.log(lists);
     const dispatch = useDispatch()
 
     // daypicker dd-mm-yy
