@@ -1,20 +1,25 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteList, setLists } from '../State/UseReducer';
+import { deleteList, setLists, setUpdate, setIsEditingForm } from '../State/UseReducer';
 import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+
 
 const ListView = () => {
-    const { lists, loadList, setUpdate } = useSelector((state) => state.lists);
-    const { reset } = useForm();
+    const { lists, loadList } = useSelector((state) => state.lists);
     const dispatch = useDispatch();
-
-    const [selectedList, setSelectedList] = useState(null);
 
     // raect daypicker dd-mm-yy
     const date = new Date();
     const currentDate = date.getDay() + '/' + parseInt(date.getMonth() + 1) + "/" + date.getFullYear();
+
+    // handleEdit
+    const handleEdit = (id) => {
+        const selected = lists.find((list) => list.id === id);
+        console.log('selected', selected);
+        dispatch(setUpdate(selected));
+        dispatch(setIsEditingForm());
+    }
 
     // set all users in table
     useEffect(() => {
@@ -27,16 +32,6 @@ const ListView = () => {
                 .catch(err => console.log(err))
         }
     }, [loadList]);
-
-
-    // handleUpdate
-    const handleEdit = (id) => {
-        const selected = lists.find((list) => list.id === id);
-        console.log('selected', selected);
-        setSelectedList(selected);
-        // dispatch(setUpdate(selected))
-    }
-
 
     // delete list of history
     const handleDelete = (id) => {

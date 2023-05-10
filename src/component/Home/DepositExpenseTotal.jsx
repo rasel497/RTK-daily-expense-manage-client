@@ -13,6 +13,7 @@ const DepositExpenseTotal = () => {
         axios.get('http://localhost:5000/totalBalance/', data)
             .then(res => {
                 // console.log('upppp', res);
+                // const amount = values.type === 'deposit' ? values.depositAmount : values.type === 'expense' ? values.expenseAmount : 0;
                 dispatch(totalAmount({ deposit: res.data[0].amount, expense: res.data[0].amount }))
             })
             .catch(err => console.log(err))

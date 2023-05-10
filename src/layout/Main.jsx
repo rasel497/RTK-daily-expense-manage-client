@@ -5,9 +5,6 @@ import ListView from '../component/Home/ListView';
 import DepositExpenseTotal from '../component/Home/DepositExpenseTotal';
 
 const Main = () => {
-    // const [deposit, setDeposit] = useState(0);
-    // const [expense, setExpense] = useState(0);
-
     return (
         <div>
             <Navbar />

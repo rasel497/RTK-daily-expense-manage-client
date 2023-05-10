@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import Main from './layout/Main';
+import NewMain from './layout/NewMain';
 
 function App() {
   return (

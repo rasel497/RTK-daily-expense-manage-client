@@ -1,16 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const listSlice = createSlice({
+    // Main Branch এ, lists নামে useSelector hook acces নিতে হবে।
+    // initialState এটি হচ্ছে useState এর initialstate এগুলা useSelector hook থেকে {Object} হিসেবে access করবো।
     name: "lists",
     initialState: {
         lists: [],
         loadList: true,
-        setUpdate: false,
+        updateUser: null,
+        isEditing: false
     },
+    /* reducers এর ভিতরের অ্যাকশন গুলা হচ্ছে useState এর setState=updateVlaue। এই setState আমি এখান থেকে export করে 
+      দিবো এবং যে কম্পোনেন্ট এ use করবো, সেই কম্পোনেন্ট এ ইম্পরট করে নিতে হবে। */
     reducers: {
         setLists: (state, action) => {
             state.loadList = false;
             state.lists = action.payload;
+        },
+        loadList: (state, action) => {
+            state.loadList = action.payload;
+        },
+        setUpdate: (state, action) => {
+            state.updateUser = action.payload;
+        },
+
+        setUpdateClear: (state, action) => {
+            state.updateClear = action.payload;
+        },
+
+        setIsEditingForm: (state) => {
+            state.isEditing = true
+        },
+        deleteList: (state, action) => {
+            const { id } = action.payload;
+            state.lists = state.lists.filter(f => f.id !== id);
         },
         totalAmount: (state) => {
             const deposits = state.lists.filter(depo => depo.type === 'deposit');
@@ -19,33 +42,8 @@ const listSlice = createSlice({
             const expenseTotal = expenses.reduce((total, exp) => total + exp.amount, 0);
             state.total = depositTotal - expenseTotal;
         },
-        loadList: (state, action) => {
-            state.loadList = action.payload;
-        },
-        setUpdate: (state, action) => {
-            state.setUpdate = action.payload;
-        },
-
-        updateList: (state, action) => {
-            const { id, purpose_title, deposit, expense } = action.payload;
-            const ul = state.users.find(user => user.id == id);
-            if (ul) {
-                ul.purpose_title = purpose_title;
-                ul.amount = deposit;
-                ul.amount = expense;
-            }
-        },
-
-        updateClear: (state, action) => {
-            // logic null/reset
-        },
-
-        deleteList: (state, action) => {
-            const { id } = action.payload;
-            state.lists = state.lists.filter(f => f.id !== id);
-        }
     }
 });
 
-export const { setLists, loadList, totalAmount, setUpdate, updateList, deleteList } = listSlice.actions;
+export const { setLists, loadList, setUpdate, deleteList, totalAmount, setIsEditingForm } = listSlice.actions;
 export default listSlice.reducer;
