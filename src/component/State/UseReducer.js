@@ -8,7 +8,8 @@ const listSlice = createSlice({
         lists: [],
         loadList: true,
         updateUser: null,
-        isEditing: false
+        isEditing: false,
+        updateClear: false
     },
     /* reducers এর ভিতরের অ্যাকশন গুলা হচ্ছে useState এর setState=updateVlaue। এই setState আমি এখান থেকে export করে 
       দিবো এবং যে কম্পোনেন্ট এ use করবো, সেই কম্পোনেন্ট এ ইম্পরট করে নিতে হবে। */
@@ -22,10 +23,17 @@ const listSlice = createSlice({
         },
         setUpdate: (state, action) => {
             state.updateUser = action.payload;
+            const { id, purpose_title, deposit, expense } = action.payload;
+            const ul = state.lists.find(list => list.id == id);
+            if (ul) {
+                ul.purpose_title = purpose_title;
+                ul.deposit = deposit;
+                ul.expense = expense;
+            }
         },
 
-        setUpdateClear: (state, action) => {
-            state.updateClear = action.payload;
+        setUpdateClear: (state) => {
+            state.updateClear = true;
         },
 
         setIsEditingForm: (state) => {
@@ -45,5 +53,5 @@ const listSlice = createSlice({
     }
 });
 
-export const { setLists, loadList, setUpdate, deleteList, totalAmount, setIsEditingForm } = listSlice.actions;
+export const { setLists, loadList, setUpdate, deleteList, totalAmount, setIsEditingForm, setUpdateClear } = listSlice.actions;
 export default listSlice.reducer;

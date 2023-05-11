@@ -1,42 +1,17 @@
 import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { loadList } from '../State/UseReducer';
+import { loadList, setUpdate } from '../State/UseReducer';
 import { useEffect, useState } from 'react';
 
+
 const AddView = () => {
-    const { lists, updateUser } = useSelector((state) => state.lists);
+    const { updateUser } = useSelector((state) => state.lists);
     const { isEditing } = useSelector((state) => state.lists);
     const dispatch = useDispatch();
-    const { register, formState: { errors, isSubmitSuccessful }, handleSubmit, reset, formState } = useForm();
-
+    const { register, handleSubmit, reset, formState, formState: { errors, isSubmitSuccessful } } = useForm();
     const [values, setValues] = useState();
     console.log('NewValues', values);
-
-    // reset form use for default values set
-    // useEffect(() => {
-    //     if (formState.isSubmitSuccessful) {
-    //         reset({
-    //             purpose_title: "ff",
-    //             type: "expense",
-    //             amount: 20,
-    //         })
-    //     }
-    // }, [formState, reset]);
-
-    // reset
-
-    useEffect(() => {
-        // firstly we checque my values have or not otherwise error undefined p. null
-        if (values) {
-            console.log('kkkk77', values)
-            reset({
-                purpose_title: values.purpose_title,
-                type: values.deposit ? 'deposit' : 'expense',
-                amount: values.deposit ? values.deposit : values.expense
-            })
-        }
-    }, [values])
 
 
     // create api - get and show list of id history when click edit
@@ -45,17 +20,62 @@ const AddView = () => {
     }, [updateUser]);
 
 
-    // successfully done
-    const handlePostSubmit = (data) => {
+    // after create api then you use reset click Edit btn set auto field values
+    useEffect(() => { // firstly we checque my values have or not otherwise error undefined p. null
+        if (values) {
+            console.log('vlauesCk', values)
+            reset({
+                purpose_title: values.purpose_title,
+                type: values.deposit ? 'deposit' : 'expense',
+                amount: values.deposit ? values.deposit : values.expense
+            })
+        }
+    }, [values])
+
+    // after create or update data form will be reset.
+    useEffect(() => {
+        if (isEditing && updateUser) {
+            reset(updateUser);
+        }
+    }, [isEditing, updateUser, reset]);
+
+    // const onSubmit = isEditing ? handleUpdatePost : handleCreatePost;
+    const handleFormSubmit = (data) => {
+        if (isEditing) {
+            handleUpdatePost(data);
+        } else {
+            handleCreatePost(data);
+        }
+    };
+
+    // for update single list of form
+    const handleUpdatePost = (data) => {
+        console.log('isUpdate', data)
+        axios.put(`http://localhost:5000/listUpdate/${values.id}`, data)
+            .then((res) => {
+                dispatch(setUpdate({
+                    id: values.id,
+                    purpose_title: data.purpose_title,
+                    type: data.type,
+                    amount: values.amount
+                }));
+                dispatch(loadList(true))
+            })
+            .catch((err) => console.log(err));
+    };
+
+    //successfully done
+    const handleCreatePost = (data) => {
         console.log('Reeee', data);
         axios.post('http://localhost:5000/exphistorypost/', data)
-            .then(res => {
+            .then((res) => {
                 console.log(res);
                 dispatch(loadList(true));
             })
-            .catch(err => console.log(err))
-        reset();
-    }
+            .catch((err) => console.log(err));
+    };
+
+
     return (
         <div className='flex justify-center items-center rounded-md bg-cyan-600 my-10'>
             <div className='w-96 p-7'>
@@ -65,8 +85,8 @@ const AddView = () => {
                         :
                         <h2 className='text-3xl font-bold text-white text-center mb-2'>Add amount</h2>
                 }
-                <form onSubmit={handleSubmit(handlePostSubmit)}>
-                    {/* <form onSubmit={onSubmit((handlePostSubmit) => { reset(); })}> */}
+                <form onSubmit={handleSubmit(handleFormSubmit)} >
+                    {/* <form onSubmit={handleSubmit((handleFormSubmit) => { reset(); })}> */}
                     <div className="form-control w-full max-w-xs">
                         <label className="label"><span className="label-text-alt  text-white">Expense title name</span></label>
                         <input type="purpose_title" placeholder='write expense purpose' className="input input-bordered w-full max-w-xs"
