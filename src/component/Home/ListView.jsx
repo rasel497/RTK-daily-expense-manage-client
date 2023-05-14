@@ -8,10 +8,9 @@ import { Link } from 'react-router-dom';
 const ListView = () => {
     const { lists, loadList } = useSelector((state) => state.lists);
     const dispatch = useDispatch();
-
-    // raect daypicker dd-mm-yy
+    // we can use raect daypicker
     const date = new Date();
-    const currentDate = date.getDay() + '/' + parseInt(date.getMonth() + 1) + "/" + date.getFullYear();
+    const currentDate = date.getDate() + '/' + (date.getMonth() + 1) + "/" + date.getFullYear();
 
     // handleEdit
     const handleEdit = (id) => {
@@ -24,7 +23,7 @@ const ListView = () => {
     // set all users in table
     useEffect(() => {
         if (loadList) {
-            axios.get('http://localhost:5000/exphistory/')
+            axios.get('http://localhost:5000/allexpensedata/')
                 .then(res => {
                     console.log(res.data)
                     dispatch(setLists(res.data))

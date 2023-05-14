@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadList, setUpdate } from '../State/UseReducer';
 import { useEffect, useState } from 'react';
 
-
 const AddView = () => {
     const { updateUser } = useSelector((state) => state.lists);
     const { isEditing } = useSelector((state) => state.lists);
@@ -32,6 +31,19 @@ const AddView = () => {
         }
     }, [values])
 
+
+    //  using it-  is form submitSuccessful Go reset
+    // useEffect(() => {
+    //     if (formState.isSubmitSuccessful) {
+    //         reset({
+    //             purpose_title: '',
+    //             type: '',
+    //             amount: ''
+    //         })
+    //     }
+    // }, [formState, reset])
+
+
     // after create or update data form will be reset.
     useEffect(() => {
         if (isEditing && updateUser) {
@@ -43,6 +55,7 @@ const AddView = () => {
     const handleFormSubmit = (data) => {
         if (isEditing) {
             handleUpdatePost(data);
+            reset();
         } else {
             handleCreatePost(data);
         }
@@ -69,13 +82,10 @@ const AddView = () => {
         console.log('Reeee', data);
         axios.post('http://localhost:5000/exphistorypost/', data)
             .then((res) => {
-                console.log(res);
                 dispatch(loadList(true));
             })
             .catch((err) => console.log(err));
     };
-
-
     return (
         <div className='flex justify-center items-center rounded-md bg-cyan-600 my-10'>
             <div className='w-96 p-7'>

@@ -1,35 +1,41 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { totalAmount } from '../State/UseReducer';
+import { useSelector } from 'react-redux';
 
 const DepositExpenseTotal = () => {
-    const lists = useSelector(state => state.lists)
-    const dispatch = useDispatch();
-    // console.log('Nexwwww', lists)
-    const [count, setCount] = useState(0);
+    const [totalDeposit, setTotalDeposit] = useState(0);
+    const [totalExpense, setTotalExpense] = useState(0);
 
-    useEffect((data) => {
-        axios.get('http://localhost:5000/totalBalance/', data)
-            .then(res => {
-                // console.log('upppp', res);
-                // const amount = values.type === 'deposit' ? values.depositAmount : values.type === 'expense' ? values.expenseAmount : 0;
-                dispatch(totalAmount({ deposit: res.data[0].amount, expense: res.data[0].amount }))
-            })
-            .catch(err => console.log(err))
-    }, [])
+    const lists = useSelector(state => state.lists);
+    // console.log('AmountList', lists);
 
-    // console.log('fff', deposit, expense);
-    // res.lists.map(r => {
-    //     setDeposit(deposit => deposit + r.deposit)
-    //     setExpense(expense => expense + r.expense)
-    //     console.log('Reeexxxxx', r)
-    // })
+    const depoTk = lists?.lists.filter(list => list.deposit)
+    // console.log('depTk', depoTk);
+    const expTk = lists?.lists.filter(list => list.expense);
+
+
+    useEffect(() => {
+        let tempExpense = 0;
+        let tempDeposit = 0;
+
+        depoTk.forEach(element => {
+            tempDeposit += element.deposit;
+        });
+        expTk.forEach((element) => {
+            tempExpense += element.expense;
+            // console.log(tempExpense, 'totalExp')
+
+        })
+        setTotalDeposit(tempDeposit)
+        setTotalExpense(tempExpense)
+
+        console.log(totalExpense, 'totalexpense')
+    }, [lists]);
+
+
     return (
         <div className='py-2'>
-            <div>
-                <h2 className='text-white text-xl font-bold'>Balance Total:{count}</h2>
-            </div>
+            <h2 className='text-white text-xl font-bold'>Deposit Total: {totalDeposit}</h2>
+            <h2 className='text-white text-xl font-bold'>Expense Total: {totalExpense}</h2>
         </div>
     );
 };
