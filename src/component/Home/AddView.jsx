@@ -25,8 +25,8 @@ const AddView = () => {
             reset({
                 date: values.date,
                 purpose_title: values.purpose_title,
-                type: values.deposit ? 'deposit' : 'expense',
-                amount: values.deposit ? values.deposit : values.expense
+                type: values.deposit ? 'deposit' : 'withdraw',
+                amount: values.deposit ? values.deposit : values.withdraw
             })
         }
     }, [values])
@@ -52,9 +52,9 @@ const AddView = () => {
         console.log('isUpdate', data)
         axios.put(`http://localhost:5000/listUpdate/${values.id}`, data)
             .then(() => {
-                // dispatch(setUpdate({ id: values.id, purpose_title: data.purpose_title, type: data.type, amount: values.amount }));
                 dispatch(setAddForm());
                 dispatch(loadList(true));
+                // dispatch(setUpdate({ id: values.id, purpose_title: data.purpose_title, type: data.type, amount: values.amount }));
                 // window.location.reload();
             })
             .catch((err) => console.log(err));
@@ -100,7 +100,7 @@ const AddView = () => {
                         <select className="select select-info w-full max-w-xs" {...register("type")}>
                             <option value="select">Select</option>
                             <option value="deposit">Deposit</option>
-                            <option value="expense">Expense</option>
+                            <option value="withdraw">Withdraw</option>
                         </select>
                     </div>
 

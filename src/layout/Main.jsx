@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../component/Shared/Navbar/Navbar';
 import AddView from '../component/Home/AddView';
 import ListView from '../component/Home/ListView';
-import DepositExpenseTotal from '../component/Home/DepositExpenseTotal';
+import DepositWithdrawTotal from '../component/Home/DepositWithdrawTotal';
 
 const Main = () => {
     return (
@@ -13,7 +13,7 @@ const Main = () => {
                 <ListView />
             </div>
             <div className='flex justify-center bg-teal-500 rounded-md mx-32'>
-                <DepositExpenseTotal />
+                <DepositWithdrawTotal />
             </div>
         </div>
     );

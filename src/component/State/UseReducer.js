@@ -9,8 +9,8 @@ const listSlice = createSlice({
         loadList: true,
         updateUser: null,
         isEditing: false,
-        depostAmount: 0,
-        expenseAmount: 0,
+        depositAmount: 0,
+        withdrawAmount: 0,
         totalAmount: 0,
     },
     /* reducers এর ভিতরের অ্যাকশন গুলা হচ্ছে useState এর setState=updateVlaue। এই setState আমি এখান থেকে export করে 
@@ -42,10 +42,10 @@ const listSlice = createSlice({
             state.lists = state.lists.filter(f => f.id !== id);
         },
         setTotalDepositR: (state, action) => {
-            state.depostAmount = action.payload;
+            state.depositAmount = action.payload;
         },
-        setTotalExpenseR: (state, action) => {
-            state.expenseAmount = action.payload;
+        setTotalWithdrawR: (state, action) => {
+            state.withdrawAmount = action.payload;
         },
 
         // setTotalAmount: (state, action) => {
@@ -54,5 +54,5 @@ const listSlice = createSlice({
     }
 });
 
-export const { setLists, loadList, setAddForm, setUpdate, setUpdateClear, deleteList, setIsEditingForm, setTotalDepositR, setTotalExpenseR } = listSlice.actions;
+export const { setLists, loadList, setAddForm, setUpdate, setUpdateClear, deleteList, setIsEditingForm, setTotalDepositR, setTotalWithdrawR } = listSlice.actions;
 export default listSlice.reducer;

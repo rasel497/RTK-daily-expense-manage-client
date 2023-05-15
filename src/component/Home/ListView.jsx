@@ -24,7 +24,7 @@ const ListView = () => {
     // set all users in table
     useEffect(() => {
         if (loadList) {
-            axios.get('http://localhost:5000/allexpensedata/')
+            axios.get('http://localhost:5000/allExpensedata/')
                 .then(res => {
                     console.log(res.data)
                     dispatch(setLists(res.data))
@@ -52,7 +52,7 @@ const ListView = () => {
                         <th>Date</th>
                         <th>Purpose Title</th>
                         <th>Deposit</th>
-                        <th>Expense</th>
+                        <th>Withdraw</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -64,7 +64,7 @@ const ListView = () => {
                                 <td>{list.date}</td>
                                 <td>{list.purpose_title}</td>
                                 <td>{list.deposit}</td>
-                                <td>{list.expense}</td>
+                                <td>{list.withdraw}</td>
                                 <td>
                                     <Link onClick={() => handleEdit(list.id)} className='btn btn-sm btn-primary mx-2'>Edit</Link>
                                     <Link onClick={() => handleDelete(list.id)} className='btn btn-sm bg-red-600 mx-2'>Delete</Link>

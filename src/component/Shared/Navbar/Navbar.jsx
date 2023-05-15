@@ -16,7 +16,7 @@ const Navbar = () => {
                 </div>
             </div>
             <div className="navbar-center text-white">
-                <a className="btn btn-ghost normal-case text-xl">Daily Expense</a>
+                <a className="btn btn-ghost normal-case text-xl">Daily Expense Management System</a>
             </div>
 
             <div className="navbar-end">
