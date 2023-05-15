@@ -50,7 +50,7 @@ const AddView = () => {
     // for update single list of form
     const handleUpdatePost = (data) => {
         console.log('isUpdate', data)
-        axios.put(`http://localhost:5000/listUpdate/${values.id}`, data)
+        axios.put(`http://localhost:5000/updateListData/${values.id}`, data)
             .then(() => {
                 dispatch(setAddForm());
                 dispatch(loadList(true));
@@ -63,7 +63,7 @@ const AddView = () => {
     //successfully done
     const handleCreatePost = (data) => {
         console.log('Reeee', data);
-        axios.post('http://localhost:5000/exphistorypost/', data)
+        axios.post('http://localhost:5000/addExpensedata/', data)
             .then((res) => {
                 dispatch(loadList(true));
             })

@@ -35,7 +35,7 @@ const ListView = () => {
 
     // delete list of history
     const handleDelete = (id) => {
-        axios.delete(`http://localhost:5000/deleteone/${id}`)
+        axios.delete(`http://localhost:5000/deleteListData/${id}`)
             .then(res => {
                 console.log(res);
                 dispatch(deleteList({ id: id }))

@@ -5,5 +5,3 @@ Alter TABLE `tbl_users` MODIFY COLUMN `dup` VARCHAR(120);
 
 02. ALTER TABLE old_table_name RENAME new_table_name;
 03. ALTER TABLE  table_name CHANGE COLUMN old_column_name new_column_name INT(255);
-
-React Redux Toolkit client  create daily expense management system.
