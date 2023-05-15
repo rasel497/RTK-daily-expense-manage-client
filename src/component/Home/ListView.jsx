@@ -9,8 +9,8 @@ const ListView = () => {
     const { lists, loadList } = useSelector((state) => state.lists);
     const dispatch = useDispatch();
     // we can use raect daypicker
-    const date = new Date();
-    const currentDate = date.getDate() + '/' + (date.getMonth() + 1) + "/" + date.getFullYear();
+    // const date = new Date();
+    // const currentDate = date.getDate() + '/' + (date.getMonth() + 1) + "/" + date.getFullYear();
 
     // handleEdit
     const handleEdit = (id) => {
@@ -35,7 +35,7 @@ const ListView = () => {
 
     // delete list of history
     const handleDelete = (id) => {
-        axios.delete('http://localhost:5000/deleteone/' + id)
+        axios.delete(`http://localhost:5000/deleteone/${id}`)
             .then(res => {
                 console.log(res);
                 dispatch(deleteList({ id: id }))
@@ -61,7 +61,7 @@ const ListView = () => {
                         Array.from(lists).map((list, index) => {
                             return <tr key={index.id}>
                                 <td>{list.id}</td>
-                                <td>{currentDate}</td>
+                                <td>{list.date}</td>
                                 <td>{list.purpose_title}</td>
                                 <td>{list.deposit}</td>
                                 <td>{list.expense}</td>

@@ -1,0 +1,4 @@
+01. Change table cloumn name type
+Alter TABLE `tableName` MODIFY COLUMN `ColumnName` datatype(length);
+Ex :
+Alter TABLE `tbl_users` MODIFY COLUMN `dup` VARCHAR(120);

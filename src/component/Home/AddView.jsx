@@ -21,8 +21,9 @@ const AddView = () => {
     // after create api then you use reset click Edit btn set auto field values
     useEffect(() => { //firstly we checque my values have or not otherwise error undefined p. null
         if (values) {
-            // console.log('vlauesck', values)
+            console.log('vlauesck', values)
             reset({
+                date: values.date,
                 purpose_title: values.purpose_title,
                 type: values.deposit ? 'deposit' : 'expense',
                 amount: values.deposit ? values.deposit : values.expense
@@ -33,19 +34,18 @@ const AddView = () => {
     // using it- Add amount form is submitSuccessful Go reset
     useEffect(() => {
         if (formState.isSubmitSuccessful) {
-            reset({ purpose_title: '', type: '', amount: '' })
+            reset({ date: '', purpose_title: '', type: 'select', amount: '' });
         }
     }, [formState, reset]);
 
-    // const onSubmit = isEditing ? handleUpdatePost : handleCreatePost;
-    const handleFormSubmit = (data) => {
-        console.log('lllllGG', data);
-        if (isEditing) {
-            handleUpdatePost(data);
-        } else {
-            handleCreatePost(data);
-        }
-    };
+    const handleFormSubmit = (data) => isEditing ? handleUpdatePost(data) : handleCreatePost(data);
+    // const handleFormSubmit = (data) => {
+    //     if (isEditing) {
+    //         handleUpdatePost(data);
+    //     } else {
+    //         handleCreatePost(data);
+    //     }
+    // };
 
     // for update single list of form
     const handleUpdatePost = (data) => {
@@ -80,6 +80,14 @@ const AddView = () => {
                 }
                 <form onSubmit={handleSubmit(handleFormSubmit)}>
                     <div className="form-control w-full max-w-xs">
+                        <label className="label"><span className="label-text-alt  text-white">Select the date</span></label>
+                        <input type="date" className='rounded-sm px-1'
+                            {...register("date", { required: "Date is requred!" })}
+                        />
+                        {errors.date && <p className='text-yellow-300'>{errors.date?.message}</p>}
+                    </div>
+
+                    <div className="form-control w-full max-w-xs">
                         <label className="label"><span className="label-text-alt  text-white">Expense title name</span></label>
                         <input type="purpose_title" placeholder='write expense purpose' className="input input-bordered w-full max-w-xs"
                             {...register("purpose_title", { required: "Title name is requred!" })}
@@ -90,7 +98,7 @@ const AddView = () => {
                     <div className="form-control w-full max-w-xs">
                         <label className="label"><span className="label-text-alt text-white">Type of amount?</span></label>
                         <select className="select select-info w-full max-w-xs" {...register("type")}>
-                            <option defaultChecked>Select</option>
+                            <option value="select">Select</option>
                             <option value="deposit">Deposit</option>
                             <option value="expense">Expense</option>
                         </select>
