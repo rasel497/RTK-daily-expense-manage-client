@@ -1,28 +1,27 @@
 import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
-import { loadList, setUpdate } from '../State/UseReducer';
+import { loadList, setAddForm } from '../State/UseReducer';
 import { useEffect, useState } from 'react';
+
 
 const AddView = () => {
     const { updateUser } = useSelector((state) => state.lists);
     const { isEditing } = useSelector((state) => state.lists);
     const dispatch = useDispatch();
-    const { register, handleSubmit, reset, formState, formState: { errors, isSubmitSuccessful } } = useForm();
+    const { register, handleSubmit, reset, formState, formState: { errors } } = useForm();
     const [values, setValues] = useState();
     console.log('NewValues', values);
-
 
     // create api - get and show list of id history when click edit
     useEffect(() => {
         setValues(updateUser)
     }, [updateUser]);
 
-
     // after create api then you use reset click Edit btn set auto field values
-    useEffect(() => { // firstly we checque my values have or not otherwise error undefined p. null
+    useEffect(() => { //firstly we checque my values have or not otherwise error undefined p. null
         if (values) {
-            console.log('vlauesCk', values)
+            // console.log('vlauesck', values)
             reset({
                 purpose_title: values.purpose_title,
                 type: values.deposit ? 'deposit' : 'expense',
@@ -31,31 +30,18 @@ const AddView = () => {
         }
     }, [values])
 
-
-    //  using it-  is form submitSuccessful Go reset
-    // useEffect(() => {
-    //     if (formState.isSubmitSuccessful) {
-    //         reset({
-    //             purpose_title: '',
-    //             type: '',
-    //             amount: ''
-    //         })
-    //     }
-    // }, [formState, reset])
-
-
-    // after create or update data form will be reset.
+    // using it- Add amount form is submitSuccessful Go reset
     useEffect(() => {
-        if (isEditing && updateUser) {
-            reset(updateUser);
+        if (formState.isSubmitSuccessful) {
+            reset({ purpose_title: '', type: '', amount: '' })
         }
-    }, [isEditing, updateUser, reset]);
+    }, [formState, reset]);
 
     // const onSubmit = isEditing ? handleUpdatePost : handleCreatePost;
     const handleFormSubmit = (data) => {
+        console.log('lllllGG', data);
         if (isEditing) {
             handleUpdatePost(data);
-            reset();
         } else {
             handleCreatePost(data);
         }
@@ -65,14 +51,11 @@ const AddView = () => {
     const handleUpdatePost = (data) => {
         console.log('isUpdate', data)
         axios.put(`http://localhost:5000/listUpdate/${values.id}`, data)
-            .then((res) => {
-                dispatch(setUpdate({
-                    id: values.id,
-                    purpose_title: data.purpose_title,
-                    type: data.type,
-                    amount: values.amount
-                }));
-                dispatch(loadList(true))
+            .then(() => {
+                // dispatch(setUpdate({ id: values.id, purpose_title: data.purpose_title, type: data.type, amount: values.amount }));
+                dispatch(setAddForm());
+                dispatch(loadList(true));
+                // window.location.reload();
             })
             .catch((err) => console.log(err));
     };
@@ -95,8 +78,7 @@ const AddView = () => {
                         :
                         <h2 className='text-3xl font-bold text-white text-center mb-2'>Add amount</h2>
                 }
-                <form onSubmit={handleSubmit(handleFormSubmit)} >
-                    {/* <form onSubmit={handleSubmit((handleFormSubmit) => { reset(); })}> */}
+                <form onSubmit={handleSubmit(handleFormSubmit)}>
                     <div className="form-control w-full max-w-xs">
                         <label className="label"><span className="label-text-alt  text-white">Expense title name</span></label>
                         <input type="purpose_title" placeholder='write expense purpose' className="input input-bordered w-full max-w-xs"

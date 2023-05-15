@@ -16,7 +16,8 @@ const ListView = () => {
     const handleEdit = (id) => {
         const selected = lists.find((list) => list.id === id);
         console.log('selected', selected);
-        dispatch(setUpdate(selected));
+        dispatch(setUpdate(selected)); // ekhine ami 1st 1ta object paichhi tarpor niche
+        // dispatch(setUpdate(null)); // ekhne ami initial null value pacchi
         dispatch(setIsEditingForm());
     }
 
